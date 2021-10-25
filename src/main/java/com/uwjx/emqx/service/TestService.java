@@ -7,6 +7,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -20,6 +21,13 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class TestService implements InitializingBean {
 
+    @Value("${emqx.serverUri}")
+    String serverUri;
+    @Value("${emqx.username}")
+    String username;
+    @Value("${emqx.password}")
+    String password;
+
     @Override
     public void afterPropertiesSet() throws Exception {
         run();
@@ -30,13 +38,13 @@ public class TestService implements InitializingBean {
 
     public void run(){
         log.warn("开始运行");
+        log.warn("serverUri -> {}" , serverUri);
+        log.warn("username -> {}" , username);
+        log.warn("password -> {}" , password);
 
-        String serverUri = "tcp://localhost:1883";
         String clientId = "client-uwjx-emqx";
-        String username = "11";
-        String password = "22";
         int qos = 2;
-        String topic = "test-topic-a";
+        String topic = "levo";
         String content = "hi, there!";
 
         MemoryPersistence persistence = new MemoryPersistence();

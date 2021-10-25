@@ -1,0 +1,4 @@
+emqx:
+  serverUri: mqtt://localhost:1883
+  username: wanghuan
+  password: 123456
