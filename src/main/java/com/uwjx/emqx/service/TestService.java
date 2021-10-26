@@ -53,27 +53,18 @@ public class TestService implements InitializingBean {
             MqttConnectOptions connectOptions = new MqttConnectOptions();
             connectOptions.setUserName(username);
             connectOptions.setPassword(password.toCharArray());
-
             connectOptions.setCleanSession(true);
-
             mqttClient.setCallback(mqttMsgCallback);
-
             log.warn("开始建立连接...");
             mqttClient.connect(connectOptions);
             log.warn("建立成功 @@@");
-
             //订阅
             mqttClient.subscribe(topic);
-
             //发布消息
             MqttMessage message = new MqttMessage(content.getBytes(StandardCharsets.UTF_8));
             message.setQos(qos);
             mqttClient.publish(topic , message);
             log.warn("已经发布消息完毕");
-
-
-
-
         }catch (Exception e){
             e.printStackTrace();
         }
