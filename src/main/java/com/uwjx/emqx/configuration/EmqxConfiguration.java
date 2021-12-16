@@ -51,6 +51,7 @@ public class EmqxConfiguration {
             log.warn("建立成功 @@@");
             //订阅
             mqttClient.subscribe(topic);
+            log.warn("订阅Topic -> {}" , topic);
             return mqttClient;
         }catch (Exception e){
             e.printStackTrace();
