@@ -1,5 +1,6 @@
 package com.uwjx.emqx.service;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -28,6 +29,6 @@ public class MqttMsgCallback implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-        log.warn("MqttMsgCallback -> deliveryComplete()");
+        log.warn("MqttMsgCallback -> deliveryComplete() : {}" , JSON.toJSONString(iMqttDeliveryToken));
     }
 }
