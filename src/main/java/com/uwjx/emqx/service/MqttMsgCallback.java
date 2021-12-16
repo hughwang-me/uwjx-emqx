@@ -6,6 +6,7 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 /**
  * @author wanghuan
@@ -18,7 +19,8 @@ public class MqttMsgCallback implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable throwable) {
-        log.warn("MqttMsgCallback -> connectionLost()");
+        log.error("MqttMsgCallback -> connectionLost()");
+        throwable.printStackTrace();
     }
 
     @Override
@@ -29,6 +31,6 @@ public class MqttMsgCallback implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-        log.warn("MqttMsgCallback -> deliveryComplete() : {}" , JSON.toJSONString(iMqttDeliveryToken));
+        log.warn("MqttMsgCallback -> deliveryComplete()");
     }
 }

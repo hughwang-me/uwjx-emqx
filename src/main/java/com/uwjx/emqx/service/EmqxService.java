@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
  */
 @Service
 @Slf4j
-public class EmqxPublishService {
+public class EmqxService {
 
     @Value("${emqx.qos}")
     int qos;
@@ -32,6 +32,14 @@ public class EmqxPublishService {
         message.setQos(qos);
         try {
             mqttClient.publish(msgBody.getTopic() , message);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addSubscribe(String topic){
+        try {
+            mqttClient.subscribe(topic);
         } catch (MqttException e) {
             e.printStackTrace();
         }

@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
  * @link https://huan.uwjx.com
  * @date 2021/10/25 19:07
  */
-@Service
+//@Service
 @Slf4j
 public class TestService implements InitializingBean {
 

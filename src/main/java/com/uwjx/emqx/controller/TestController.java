@@ -2,13 +2,10 @@ package com.uwjx.emqx.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.uwjx.emqx.bean.EmqxMsgBody;
-import com.uwjx.emqx.service.EmqxPublishService;
+import com.uwjx.emqx.service.EmqxService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author wanghuan
@@ -21,12 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @Autowired
-    EmqxPublishService emqxPublishService;
+    EmqxService emqxService;
 
-    @GetMapping(value = "publish")
+    @PostMapping(value = "publish")
     public String publish(@RequestBody EmqxMsgBody msgBody){
-        log.warn("msgBody : {}" , JSON.toJSONString(msgBody));
-        emqxPublishService.publish(msgBody);
+        log.warn("publish : {}" , JSON.toJSONString(msgBody));
+        emqxService.publish(msgBody);
+        return "ok";
+    }
+
+    @PostMapping(value = "addSubscribe")
+    public String addSubscribe(@RequestBody EmqxMsgBody msgBody){
+        log.warn("addSubscribe : {}" , JSON.toJSONString(msgBody));
+        emqxService.addSubscribe(msgBody.getTopic());
         return "ok";
     }
 }

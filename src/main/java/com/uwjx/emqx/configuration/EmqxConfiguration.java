@@ -6,6 +6,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -20,7 +21,7 @@ import java.nio.charset.StandardCharsets;
  */
 @Configuration
 @Slf4j
-public class EmqxConfiguration {
+public class EmqxConfiguration implements DisposableBean {
 
     @Value("${emqx.serverUri}")
     String serverUri;
@@ -33,29 +34,40 @@ public class EmqxConfiguration {
     @Value("${emqx.topic}")
     String topic;
 
+    MqttClient mqttClient;
     @Autowired
     MqttMsgCallback mqttMsgCallback;
 
     @Bean
-    public MqttClient initMqttClient(){
+    public MqttClient initMqttClient() {
         MemoryPersistence persistence = new MemoryPersistence();
         try {
-            MqttClient mqttClient = new MqttClient(serverUri , clientId , persistence);
+            mqttClient = new MqttClient(serverUri, clientId, persistence);
             MqttConnectOptions connectOptions = new MqttConnectOptions();
             connectOptions.setUserName(username);
             connectOptions.setPassword(password.toCharArray());
             connectOptions.setCleanSession(true);
+            connectOptions.setAutomaticReconnect(true);
             mqttClient.setCallback(mqttMsgCallback);
             log.warn("开始建立连接...");
             mqttClient.connect(connectOptions);
             log.warn("建立成功 @@@");
             //订阅
             mqttClient.subscribe(topic);
-            log.warn("订阅Topic -> {}" , topic);
+            log.warn("订阅Topic -> {}", topic);
             return mqttClient;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        if (mqttClient != null) {
+            mqttClient.disconnect();
+            mqttClient.close();
+        }
+        log.error("@@关闭连接@@");
     }
 }
