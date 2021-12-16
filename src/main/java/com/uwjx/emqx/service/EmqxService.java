@@ -44,4 +44,11 @@ public class EmqxService {
             e.printStackTrace();
         }
     }
+
+    public void listSubscribe(){
+//        try {
+//        } catch (MqttException e) {
+//            e.printStackTrace();
+//        }
+    }
 }

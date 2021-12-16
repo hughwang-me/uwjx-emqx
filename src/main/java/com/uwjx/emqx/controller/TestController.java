@@ -33,4 +33,11 @@ public class TestController {
         emqxService.addSubscribe(msgBody.getTopic());
         return "ok";
     }
+
+    @PostMapping(value = "listSubscribe")
+    public String listSubscribe(@RequestBody EmqxMsgBody msgBody){
+        log.warn("listSubscribe : {}" , JSON.toJSONString(msgBody));
+        emqxService.listSubscribe();
+        return "ok";
+    }
 }
